@@ -80,4 +80,4 @@ int main(){
 		}
 	}
 	for(int i=1;i<=n;i++)if(opt[i]==2)printf("%d\n",ans[i]);
-}
+} 

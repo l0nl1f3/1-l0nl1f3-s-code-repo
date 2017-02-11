@@ -100,5 +100,5 @@ int main(){
 	for(int i=1;i<=hn;i++)_.G.lnk(i+sn,_.t,1);
 	cout<<_.dinic();
 	return 0;
-}
+} 
 

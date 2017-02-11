@@ -59,10 +59,10 @@ int main(){
 	for(int i=1;i<=n;i++)v[i]=L[i]=R[i]=gi;
 	for(int i=1,a,b;i<=m;i++){
 		a=gi;b=gi;
-		gmax(R[a],b);gmax(L[a],b);
+		gmax(R[a],b);gmin(L[a],b);
 	}
 	cdq(1,n);
-	printf("%d",*max_element(ans+1,ans+n+1));
+	printf("%d\n",*max_element(ans+1,ans+n+1));
 	return 0;
 }
-
+ 
