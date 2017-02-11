@@ -1,86 +1,78 @@
-#include <cstring>
-#include <cstdio>
-#include <algorithm>
+#include<map>
+#include<stack>
+#include<set>
+#include<queue>
+#include<cstdio>
+#include<string>
+#include<vector>
+#include<cstring>
+#include<complex>
 #include<iostream>
-#include <set>
-
+#include<assert.h>
+#include<algorithm>
 using namespace std;
-
-const int MAXN = 75005, MAXM = 1e5 + 5;
-
-multiset<int> d;
-int n, m, deg[MAXN], ord[MAXN], f[MAXN], g[MAXN];
-int tot, In[MAXN], Out[MAXN], Next[MAXM * 2], Go[MAXM * 2]; 
-
-void link_in(int u, int v) {
-    Next[++ tot] = In[u], In[u] = tot, Go[tot] = v;
+#define inf 1001001001
+#define infll 1001001001001001001LL
+#define ll long long
+#define dbg(vari) cerr<<#vari<<" = "<<(vari)<<endl
+#define gmax(a,b) (a)=max((a),(b))
+#define gmin(a,b) (a)=min((a),(b))
+#define Ri register int
+#define gc getchar()
+#define il inline
+il int read(){
+	bool f=true;Ri x=0;char ch;while(!isdigit(ch=gc))if(ch=='-')f=false;while(isdigit(ch)){x=(x<<1)+(x<<3)+ch-'0';ch=gc;}return f?x:-x;
 }
-
-void link_out(int u, int v) {
-    Next[++ tot] = Out[u], Out[u] = tot, Go[tot] = v;
-}
-
-void add(int now) {
-    for (int p = Out[now]; p; p = Next[p]) 
-        d.insert(f[now] + g[Go[p]] + 1);
-    d.insert(f[now]);
-}
-
-void del(int now) {
-    for (int p = In[now]; p; p = Next[p]) 
-        d.erase(d.find(g[now] + f[Go[p]] + 1));
-    d.erase(d.find(g[now]));
-}
-
-void prepare() {
-    static int d[MAXN];
-    int l = 0, r = 0, cnt = 0;
-    for (int i = 1; i <= n; i ++) 
-        if (deg[i] == 0) d[++ r] = i, ord[++ cnt] = i;
-    while (l <= r) {
-        int now = d[++ l];
-        for (int p = Out[now]; p; p = Next[p]) {
-            int v = Go[p];
-            deg[v] --;
-            if (deg[v] == 0) {
-                ord[++ cnt] = v;
-                d[++ r] = v;
-            }
-        }
-    }
-    for (int i = 1; i <= n; i ++) {
-        int now = d[i];
-        for (int p = Out[now]; p; p = Next[p]) 
-            f[Go[p]] = max(f[now] + 1, f[Go[p]]);
-    }
-    
-    for (int i = n; i; i --) {
-        int now = d[i];
-        for (int p = In[now]; p; p = Next[p]) 
-            g[Go[p]] = max(g[now] + 1, g[Go[p]]);
-    }
-    for(int i=1;i<=n;i++)std::cout<<g[i]<<' ';
-}
-
-int main() {
-    scanf("%d%d", &n, &m);
-    for (int i = 1; i <= m; i ++) {
-        int u, v;
-        scanf("%d%d", &u, &v);
-        link_out(u, v);
-        link_in(v, u);
-        deg[v] ++;
-    }
-    prepare();
-    for (int i = 1; i <= n; i ++) 
-        d.insert(g[i]);
-    int ans = n + 1, id;
-    for (int i = 1; i <= n; i ++) {
-        int now = ord[i];
-        del(now);
-        int s = *--d.end();
-        if (s < ans || s == ans && now < id) ans = s, id = now;
-        add(now);
-    }
-    printf("%d %d\n", id, ans);
+#define gi read()
+#define ig read()
+#define FO(x) freopen(#x".in","r",stdin),freopen(#x".out","w",stdout);
+int n,m;
+struct edge{
+	int to,next;
+}e[1234567],e2[1234567];
+int cnt2,last2[512345];
+int cnt,last[512345],d[512345];
+int f[512345],g[512345],tp[512345],C;
+multiset<int>ms;
+int main(){
+	FO(trip);
+	n=gi;m=gi;
+	for(int i=1,u,v;i<=m;i++){
+		u=gi;v=gi;
+		e[++cnt]=(edge){v,last[u]};last[u]=cnt;
+		d[v]++;
+		e2[++cnt2]=(edge){u,last2[v]};last2[v]=cnt2;
+	}
+	queue<int>q;
+	for(int i=1;i<=n;i++)if(!d[i])q.push(i);
+	while(!q.empty()){
+		int c=q.front();q.pop();
+		tp[++C]=c;
+		for(int i=last[c];i;i=e[i].next){
+			int b=e[i].to;
+			if(!--d[b])q.push(b);
+		}
+	}
+	for(int i=1;i<=n;i++)
+		for(int j=last[tp[i]];j;j=e[j].next)
+			gmax(f[e[j].to],f[tp[i]]+1);
+	for(int i=n;i>=1;i--)
+		for(int j=last2[tp[i]];j;j=e2[j].next)
+			gmax(g[e2[j].to],g[tp[i]]+1);
+	
+	for(int i=1;i<=n;i++)ms.insert(g[i]);
+	int ans=n+1,sna=n+1;			
+	for(int i=1;i<=n;i++){
+		int c=tp[i];
+		for(int u=last2[c];u;u=e2[u].next)ms.erase(ms.find(1+f[e2[u].to]+g[c]));
+		ms.erase(ms.find(g[c]));
+		int h=*--ms.end();
+		if(h<=ans){
+			ans=h;
+			sna=min(sna,c);
+		} 
+		for(int u=last[c];u;u=e[u].next)ms.insert(1+f[c]+g[e[u].to]);
+		ms.insert(f[c]);
+	} 
+	cout<<sna<<' '<<ans;
 }
