@@ -47,16 +47,13 @@ struct dheap{
 	priority_queue<int>pq,dl;
 	void push(int x){pq.push(x);}
 	int top(){
-		while(!dl.empty()&&pq.top()==dl.top()){
-			pq.pop(),dl.pop();
-		}
+		while(!dl.empty()&&pq.top()==dl.top())pq.pop(),dl.pop();
 		return pq.empty()?-1:pq.top();
 	}
-	int pop(){int ans=top();if(!pq.empty())pq.pop();return ans;}
 	int del(int x){dl.push(x);}
 };
 struct SegmentTree{
-	dheap d[N*10];
+	dheap d[N*4];
 	void change(int k,int l,int r,int a,int b,int v,int tag){
 		//cerr<<"^^"<<k<<","<<l<<","<<r<<","<<a<<","<<b<<endl;
 		//for(int i=1;i<=100000000;i++);
@@ -102,8 +99,7 @@ struct hld{
 	    if(dep[x]<dep[y])swap(x,y);
 	    v.pb(mp(dfn[y],dfn[x]));sort(v.begin(),v.end());
 	    x=1;
-	    for(int i=0;i<v.size();x=v[i].se+1,i++)
-	        T.change(1,1,n,x,v[i].fi-1,u,tag);
+	    for(int i=0;i<v.size();x=v[i].se+1,i++)T.change(1,1,n,x,v[i].fi-1,u,tag);
 	    T.change(1,1,n,x,n,u,tag);
 	}
 	int query(int s){return T.query(1,1,n,dfn[s]);}
