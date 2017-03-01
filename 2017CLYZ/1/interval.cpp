@@ -76,7 +76,7 @@ int main(){
 			++qn; 
 			L[qn]=x[i]=lower_bound(v.begin(),v.end(),x[i])-v.begin()+1;
 			R[qn]=y[i]=lower_bound(v.begin(),v.end(),y[i])-v.begin()+1;
-			zkw.cha(x[qn],qn);zkw.cha(y[qn],qn);
+			zkw.cha(x[i],qn);zkw.cha(y[i],qn);
 			zkw.ins(L[qn],R[qn],qn);
 		}else{
 			x[i]=find(x[i]);y[i]=find(y[i]);
