@@ -34,16 +34,6 @@ int n,qn,f[N],L[N],R[N],o[N],x[N],y[N];
 int find(int x){return f[x]==x?x:f[x]=find(f[x]);}
 struct SegTree{
 	vector<int>s[N+N];int M;
-	/*void cha(int x,int l,int r,int p,int q){
-		while(!s[x].empty()){
-			i=s[x].back();s[x].ob();
-			gmin(L[p],L[i]);gmax(R[p],R[i]);
-			f[i]=p;		
-		}
-		if(l==r)return;
-		if(p<=(l+r)/2)cha(x+x,l,(l+r)/2,p,q);
-		else cha(x+x+1,(l+r)/2+1,r,p,q);
-	}*/
 	void cha(int x,int p){
 		for(int r=x+M,i;r;r>>=1){
 			while(!s[r].empty()){
