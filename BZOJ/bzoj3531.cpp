@@ -30,7 +30,7 @@ il int read(){bool f=true;Ri x=0;char ch;while(!isdigit(ch=gc))if(ch=='-')f=fals
 #define gi read()
 #define N 101234
 #define M 201234
-#define S 10001234
+#define S 30001234
 struct Edge{int to,nxt;};
 struct HLD{
 	Edge e[M];int C,lst[N];
@@ -57,7 +57,7 @@ struct HLD{
 	void prep(){dfs1(1);dfs2(1);}
 	int sum(int k,int l,int r,int a,int b){
 		if(r<a||l>b)return 0;
-		if(l<=a&&b<=r)return s[k];
+		if(a<=l&&r<=b)return s[k];
 		return sum(ls[k],l,(l+r)/2,a,b)+sum(rs[k],(l+r)/2+1,r,a,b);
 	}
 	int Max(int x,int y){return x>y?x:y;}
@@ -98,7 +98,7 @@ struct HLD{
 		n=gi;q=gi;
 		for(int i=1;w[i]=gi,c[i]=gi,i<n;i++);
 		for(int i=1;i<n;i++)lnk(gi,gi);
-		prep(); 
+		prep();
 		for(int i=1;i<=n;i++)add(rt[c[i]],1,n,dfn[i],w[i]); 
 		while(q--){char op[5];int x,y,z;
 			scanf("%s",op);x=gi;y=gi;z=dfn[x];
