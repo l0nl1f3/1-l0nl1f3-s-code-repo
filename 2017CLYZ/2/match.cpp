@@ -40,6 +40,7 @@ int main(){
 		for(int i=1;i<=n;i++)s[i]=gi;
 		memset(lst,0,sizeof(lst));		
 		for(int i=1;i<=n;i++)da[i]=i-lst[s[i]],lst[s[i]]=i;
+		da[n+1]=db[m+1]=0; 
 		for(int i=2,j=nxt[1]=0;i<=n;i++){
 			while(j&&!c(i,j))j=nxt[j];
 			nxt[i]=(j+=c(i,j)); 

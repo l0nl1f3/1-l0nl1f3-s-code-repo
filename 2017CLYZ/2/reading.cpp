@@ -69,7 +69,7 @@ int main(){
 		if(i){
 			ll a,b;
 			a=zkw.que(1,1,p,j,p)-k;
-			b=j-1?zkw.que(1,1,p,1,j-1)-k-A:-inf;
+			b=j-1?zkw.que(1,1,p,1,j-1)-k-A:-infll;
 			f[i]=max(a,b)+::b[i]; 
 		}
 		zkw.cha(1,1,p,j,f[i]+k);
