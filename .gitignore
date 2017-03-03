@@ -1,8 +1,4 @@
-*/*.exe
-*/*.in
-*/*.out
-*/*/*.exe
-*/*/*.in
-*/*/*.out
-*/*.pptx
+*.exe
+*.in
+*.out
 */*/data/*
