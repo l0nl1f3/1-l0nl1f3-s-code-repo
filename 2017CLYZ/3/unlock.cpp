@@ -51,16 +51,40 @@ void dfs(int p){
 		dfs(p+1);
 	}
 }
+int t,siz[N];double c[N][N],f[N][N];
+void dfs1(int x){
+	b[x]=1;siz[t]++;
+	if(b[p[x]])return;
+	dfs1(p[x]);
+}
 int main(){
 	FO(unlock);	
 	T=gi;
-	while(T--){
-		n=gi;k=gi;
-		for(int i=1;i<=n;i++)p[i]=gi;
-		P=q=0;dfs(1);
-		printf("%.10lf\n",1.0*P/q);
+	c[0][0]=1;
+	for(int i=1;i<=300;i++){
+		c[i][0]=1;		
+		for(int j=0;j<=300;j++)
+			c[i][j]=c[i-1][j]+c[i-1][j-1];
 	}
-
+	while(T--){
+		n=gi;k=gi;t=0;
+		memset(b,0,sizeof(b));
+		memset(f,0,sizeof(f));
+		memset(siz,0,sizeof(siz));
+		for(int i=1;i<=n;i++)p[i]=gi;
+		for(int i=1;i<=n;i++)if(!b[i])++t,dfs1(i);
+		f[0][0]=1;
+		for(int i=1,m=0;i<=t;i++){
+			m+=siz[i];
+			for(int j=1;j<=m;j++){
+				for(int l=1;l<=min(j,siz[i]);l++){
+					f[i][j]=f[i][j]+f[i-1][j-l]*c[siz[i]][l];
+				}
+//				cout<<i<<','<<f[i][j]<<endl;
+			}
+		}	
+		cout<<f[t][k]/c[n][k]<<endl;
+	} 
 	return 0;
 }
 
