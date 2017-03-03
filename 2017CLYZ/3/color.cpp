@@ -33,13 +33,12 @@ il int read(){bool f=true;Ri x=0;char ch;while(!isdigit(ch=gc))if(ch=='-')f=fals
 #define L 20
 struct edge{int to,nxt;};
 edge e[M];int n,q,cnt,ans[N],lst[N],siz[N],cr[N],d[N];
-void ins(int a,int b){e[++cnt]=(edge){b,lst[a]};lst[a]=cnt;}
-void lnk(int a,int b){ins(a,b);ins(b,a);}
-int dfn[N],pos[N],lb[N],rb[N],g[N][L],nfd;
+inline void ins(int a,int b){e[++cnt]=(edge){b,lst[a]};lst[a]=cnt;}
+inline void lnk(int a,int b){ins(a,b);ins(b,a);}
+int dfn[N],pos[N],lb[N],rb[N],g[N],nfd;
 void dfs0(int x,int f=0){
 	siz[x]=1;d[x]=d[f]+1;
-	pos[++nfd]=x;dfn[x]=lb[x]=nfd;
-	g[x][0]=f;for(int i=1;i<L;i++)g[x][i]=g[g[x][i-1]][i-1];
+	pos[++nfd]=x;dfn[x]=lb[x]=nfd;g[x]=f;
 	for(int i=lst[x],b;i;i=e[i].nxt){
 		if((b=e[i].to)==f)continue;
 		dfs0(b,x);
@@ -48,8 +47,8 @@ void dfs0(int x,int f=0){
 	rb[x]=nfd;
 } 
 ll s[M*10],tag[M*10];
-int pu(int x){s[x]=s[x+x]+s[x+x+1];}
-int cov(int x,int l,int r,int v){s[x]+=(r-l+1)*v;tag[x]+=v;}
+inline int pu(int x){s[x]=s[x+x]+s[x+x+1];}
+inline int cov(int x,int l,int r,int v){s[x]+=(r-l+1)*v;tag[x]+=v;}
 int pd(int x,int l,int r){
 	cov(x+x,l,(l+r)/2,tag[x]);
 	cov(x+x+1,(l+r)/2+1,r,tag[x]);
@@ -64,18 +63,20 @@ void build(int x,int l,int r){
 	}
 }
 void modify(int x,int l,int r,int p,int q,int d){
-	if(p>r||q<l)return;
 	if(p<=l&&r<=q){cov(x,l,r,d);return;}
 	if(tag[x])pd(x,l,r);
-	modify(x+x,l,(l+r)/2,p,q,d);
-	modify(x+x+1,(l+r)/2+1,r,p,q,d);
+	int mid=l+r>>1;
+	if(p<=mid)modify(x+x,l,mid,p,q,d);
+	if(q>mid)modify(x+x+1,mid+1,r,p,q,d);
 	pu(x);
 }
 ll query(int x,int l,int r,int p,int q){
-	if(p>r||q<l)return 0;
 	if(p<=l&&r<=q)return s[x];
 	if(tag[x])pd(x,l,r);
-	return query(x+x,l,(l+r)/2,p,q)+query(x+x+1,(l+r)/2+1,r,p,q);
+	ll ans=0;int mid=l+r>>1; 
+	if(p<=mid)ans+=query(x+x,l,mid,p,q);
+	if(q>mid)ans+=query(x+x+1,mid+1,r,p,q);
+	return ans;
 }
 void modify(int w,ll v){if(!w)return;modify(1,1,n,lb[w],rb[w],v);}
 ll query(int x){return query(1,1,n,lb[x],rb[x]);}
@@ -88,8 +89,8 @@ namespace LCT{
         if(ch[x][0]) l[x]=l[ch[x][0]];
         if(ch[x][1]) r[x]=r[ch[x][1]];
     }
-    void reverse(int x) {if(!x) return; swap(l[x],r[x]),swap(ch[x][0],ch[x][1]),rev[x]^=1;}
-    void pud(int x) {if(!x) return; if(rev[x]) reverse(ch[x][0]),reverse(ch[x][1]),rev[x]^=1;}
+    inline void reverse(int x) {if(!x) return; swap(l[x],r[x]),swap(ch[x][0],ch[x][1]),rev[x]^=1;}
+    inline void pud(int x) {if(!x) return; if(rev[x]) reverse(ch[x][0]),reverse(ch[x][1]),rev[x]^=1;}
     void rot(int x){
         int y=fa[x],w=ch[y][1]==x,z=fa[y];
         ch[y][w]=ch[x][w^1];
@@ -111,7 +112,7 @@ namespace LCT{
         puu(x);
     }
     inline void access(int x){for(int y=0;x;y=x,x=fa[x])splay(x),modify(l[y],-1),modify(l[ch[x][1]],1),ch[x][1]=y,puu(x);}
-    int init(){for(int i=1;i<=n;i++)fa[i]=g[i][0],l[i]=r[i]=i;}
+    int init(){for(int i=1;i<=n;i++)fa[i]=g[i],l[i]=r[i]=i;}
 }using namespace LCT;
 int main(){
 	FO(color);
