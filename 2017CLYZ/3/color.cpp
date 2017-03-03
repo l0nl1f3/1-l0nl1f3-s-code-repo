@@ -46,40 +46,22 @@ void dfs0(int x,int f=0){
 	}
 	rb[x]=nfd;
 } 
-ll s[M*10],tag[M*10];
-inline int pu(int x){s[x]=s[x+x]+s[x+x+1];}
-inline int cov(int x,int l,int r,int v){s[x]+=(r-l+1)*v;tag[x]+=v;}
-int pd(int x,int l,int r){
-	cov(x+x,l,(l+r)/2,tag[x]);
-	cov(x+x+1,(l+r)/2+1,r,tag[x]);
-	tag[x]=0;
-} 
-void build(int x,int l,int r){
-	if(l==r)s[x]=d[pos[l]];
-	else{
-		build(x+x,l,(l+r)/2);
-		build(x+x+1,(l+r)/2+1,r);
-		pu(x);
-	}
+ll a1[200001],a2[200001];
+ll qzh(int r){
+    ll s1=0,s2=0;
+    for(int i=r;i>=1;i-=i&-i) s1+=a1[i], s2+=a2[i];
+    return (r+1)*s1-s2;
 }
-void modify(int x,int l,int r,int p,int q,int d){
-	if(p<=l&&r<=q){cov(x,l,r,d);return;}
-	if(tag[x])pd(x,l,r);
-	int mid=l+r>>1;
-	if(p<=mid)modify(x+x,l,mid,p,q,d);
-	if(q>mid)modify(x+x+1,mid+1,r,p,q,d);
-	pu(x);
+ll sum(int l,int r){
+    return qzh(r)-qzh(l-1);
 }
-ll query(int x,int l,int r,int p,int q){
-	if(p<=l&&r<=q)return s[x];
-	if(tag[x])pd(x,l,r);
-	ll ans=0;int mid=l+r>>1; 
-	if(p<=mid)ans+=query(x+x,l,mid,p,q);
-	if(q>mid)ans+=query(x+x+1,mid+1,r,p,q);
-	return ans;
+void edt(ll a,ll s1){
+    ll s2=a*s1;
+    for(;a<=n;a+=a&-a) a1[a]+=s1,a2[a]+=s2;
 }
-void modify(int w,ll v){if(!w)return;modify(1,1,n,lb[w],rb[w],v);}
-ll query(int x){return query(1,1,n,lb[x],rb[x]);}
+void edt(int l,int r,ll a){edt(l,a);edt(r+1,-a);}
+void modify(int w,ll v){if(!w)return;edt(lb[w],rb[w],v);}
+ll query(int x){return sum(lb[x],rb[x]);}
 namespace LCT{
     int fa[N],ch[N][2],l[N],r[N];bool rev[N];
     inline bool is_root(int x) {return !fa[x]||ch[fa[x]][0]!=x&&ch[fa[x]][1]!=x;}
@@ -118,7 +100,8 @@ int main(){
 	FO(color);
 	for(int i=(n=gi)-1;i;i--)lnk(gi+1,gi+1);
 	dfs0(1);q=gi;
-	build(1,1,n);init();
+	for(int i=1;i<=n;i++)edt(i,i,d[pos[i]]); 
+	init();
 	while(q--){
 		char c[3];int x;
 		scanf("%s",c);x=gi+1;
