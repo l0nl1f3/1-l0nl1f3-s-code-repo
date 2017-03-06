@@ -39,12 +39,10 @@ int g[N][L],d[N],du[N];long long h[N][L],bs[N];
 void dfs(int v,int f=0){
 	g[v][0]=f;h[v][0]=du[v]; 
 	for(int i=1;i<L;i++){
-		cerr<<v<<","<<i<<endl;
 		g[v][i]=g[g[v][i-1]][i-1];
 		h[v][i]=h[v][i-1]+h[g[v][i-1]][i-1]*bs[i-1];
 	}
 	for(int i=lst[v],b;i;i=e[i].nxt){
-		cerr<<"-> "<<e[i].to<<endl; 
 		if((b=e[i].to)==f)continue;
 		d[b]=d[v]+1;
 		dfs(b,v);
@@ -52,7 +50,7 @@ void dfs(int v,int f=0){
 } 
 int xy(int x,int y){
 	for(int i=L-1;~i;i--)if(h[x][i]==h[y][i])x=g[x][i],y=g[y][i];
-	return g[x][0]<g[y][0];
+	return h[x][0]<h[y][0];
 }
 int height(int x,int y){
 	int ans=0;
@@ -69,7 +67,7 @@ int main(){
 	for(int i=1;rk[i]=i,i<n;i++);
 	sort(rk+1,rk+n+1,xy);
 	ll ans=0;
-	for(int i=2;i<=n;i++)
+	for(int i=1;i<=n;i++)
 		ans=ans+d[i]-height(rk[i],rk[i-1]);
 	cout<<ans;
 	return 0;

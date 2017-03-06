@@ -63,7 +63,7 @@ int main(){
 		}
 		g[i][o]=C(n+m-x[i]-y[i],n-x[i]);
         for (int j=o;j>=1;j--){
-			g[i][j]=(g[i][j]-g[i][j-1])%pyz;
+			g[i][j]=g[i][j]-g[i][j-1];
         	if(g[i][j]<=0)g[i][j]+=pyz; 
 		}
 	}
