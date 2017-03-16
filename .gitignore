@@ -2,4 +2,5 @@
 *.in
 *.out
 */*/data/*
+*/*/source/*
 *.html
