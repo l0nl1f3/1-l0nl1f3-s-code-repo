@@ -1,15 +1,15 @@
-#include<map>
-#include<stack>
-#include<queue>
-#include<cstdio>
-#include<string>
-#include<bitset>
-#include<vector>
-#include<cstring>
-#include<complex>
-#include<iostream>
-#include<assert.h>
-#include<algorithm>
+#include <map>
+#include <stack>
+#include <queue>
+#include <cstdio>
+#include <string>
+#include <bitset>
+#include <vector>
+#include <cstring>
+#include <complex>
+#include <iostream>
+#include <assert.h>
+#include <algorithm>
 using namespace std;
 #define fi first
 #define se second
@@ -41,14 +41,14 @@ void lnk(int a,int b,ll p){ins(a,b,p);ins(b,a,p);}
 struct ntt{
 	ll w[2][N];
 	int K;
-	__attribute__((optimize("-Ofast"))) __inline__ __attribute__((always_inline)) void fftinit(int n){
+	void fftinit(int n){
 	    for(K=1;K<n;K<<=1);
 	    w[0][0]=w[0][K]=1;
 	    ll g=fp(3,(mod-1)/K);
 	    for(int i=1;i<K;i++) w[0][i]=w[0][i-1]*g%mod;
 	    for(int i=0;i<=K;i++) w[1][i]=w[0][K-i];
 	}
-	__attribute__((optimize("-Ofast"))) __inline__ __attribute__((always_inline)) void fft(ll* x,int v){
+	void fft(ll* x,int v){
 	    for(int i=0,j=0;i<K;i++){
 	        if(i>j) swap(x[i],x[j]);
 	        for(int l=K>>1;(j^=l)<l;l>>=1);
@@ -66,14 +66,14 @@ struct ntt{
 	    ll rv=fp(K,mod-2);
 	    for(int i=0;i<K;i++) x[i]=x[i]*rv%mod;
 	}
-	__attribute__((optimize("-Ofast"))) __inline__ __attribute__((always_inline)) void mul(ll *a,ll* b){
+	void mul(ll *a,ll* b){
 		fft(a,0);fft(b,0);
 		for(int i=0;i<K;i++)a[i]=a[i]*b[i]%mod;
 		fft(a,1); 
 		for(int i=k+1;i<K;i++)a[i]=0; 
 	}
 }ZY;
-__attribute__((optimize("-Ofast"))) void dfs(int v,int fa){
+void dfs(int v,int fa){
 	f[v][0]=1;
 	for(int i=1;i<=k;i++)f[v][i]=f[v][i-1]*a[v]%mod*ny[i]%mod;
 	for(int i=lst[v],b;b=e[i].to,i;i=e[i].nxt){
