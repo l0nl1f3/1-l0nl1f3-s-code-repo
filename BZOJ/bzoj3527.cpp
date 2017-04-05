@@ -73,20 +73,18 @@ void dft(int n,cpx*x,cpx*w){
 cpx c[N]; 
 void mul(cpx *a,cpx *b){
 	int A,B;
-	A=gi;B=gi;++A,++B;
-	for(int i=0;i<A;i++)a[i].r=gi;
-	for(int i=0;i<B;i++)b[i].r=gi;
-	int t=max(A,B);
+	A=gi;--A;
+	for(int i=0;i<=A;i++)scanf("%lf",&a[i].r);
+	for(int i=0;i<A;i++)b[i].r=(-1.0)/(double)(A-i)/double(A-i);
+	for(int i=A+1;i<=A+A;i++)b[i].r=-b[A+A-i].r;
 	int n=1;
-	for(;n<t*2;n<<=1);
+	for(;n<=A*4;n<<=1);
 	init_epsilon(n);
 	dft(n,a,epsilon);
 	dft(n,b,epsilon);
-	// py trade
 	for(int i=0;i<n;i++)c[i]=a[i]*b[i];
-	int nn=n;cout<<n;
 	dft(n,c,arti_epsilon);
-	for(int i=0;i<=A+B-1;i++)printf("%d ",(int)(c[i].r/nn+0.5));
+	for(int i=A;i<=A+A;i++)printf("%lf\n",c[i].r/n);
 }
 int main(){
 	mul(a,b);
