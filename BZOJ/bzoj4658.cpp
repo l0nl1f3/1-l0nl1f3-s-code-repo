@@ -1,12 +1,15 @@
+#include<bits/stdc++.h>
+#define pb push_back
+#define ll long long
+#define infll 1001001001001001001LL
 #define N 101234
-int k,m,d,A,n,t[N],b[N];ll f[N];
-vector<int>v;
-//书中有n页能让A君感到愉悦，阅读第ti页可以获得bi的愉悦度
+using namespace std;
+int k,m,d,A,n,t[N],b[N];ll f[N];vector<int>v;
 struct SegT{
 	ll mx[N*10];
 	void ST(){for(int i=1;i<N*10;i++)mx[i]=-infll;}
 	void cha(int x,int l,int r,int p,ll d){
-		gmax(mx[x],d);
+		mx[x]=max(mx[x],d);
 		if(l==r)return;
 		else{
 			if(p<=(l+r)/2)cha(x+x,l,(l+r)/2,p,d);
@@ -20,11 +23,11 @@ struct SegT{
 	}
 }zkw; 
 int main(){
-	k=gi;m=gi;d=gi;A=gi;n=gi;
+	scanf("%d%d%d%d%d",&k,&m,&d,&A,&n);
 	v.pb(k%d);v.pb(m%d);
 	t[0]=k;t[n+1]=m; 
 	for(int i=1;i<=n;i++){
-		t[i]=gi;b[i]=gi;
+		scanf("%d%d",t+i,b+i); 
 		v.pb(t[i]%d);
 		//v.pb(b[i]%d);
 	}
