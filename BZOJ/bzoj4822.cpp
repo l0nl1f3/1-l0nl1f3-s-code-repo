@@ -33,4 +33,4 @@ int main(){
 		else add(q[i].y,q[i].v);
     for(i=1;i<=m;i++)printf("%lld\n",ans[i]);
 	return 0;
-}
+} 
