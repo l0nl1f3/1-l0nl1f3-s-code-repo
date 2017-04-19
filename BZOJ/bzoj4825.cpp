@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 #define N 1601234
 #define inf (1<<30)
- 
+  
 using namespace std;
 set<int>s;
 int n,m,id[N],d[N],x[N],op[N],cnt=1,ctn=-1;
