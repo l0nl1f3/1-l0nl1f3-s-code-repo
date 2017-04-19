@@ -80,4 +80,4 @@ int main(){
 	}
 	cout<<as;
 	return 0;
-}
+} 
