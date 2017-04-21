@@ -17,7 +17,7 @@ int mul(int *a,int *b,int *q){
 }
 int main(){
 	int i,j;
-	for(scanf("%d%d",&n,&k),i=0;i<=k;i++)scanf("%d",a+i),M[i]=(a[i]<0?a[i]+p:a[i]);
+	for(scanf("%d%d",&n,&k),i=0;i<k;i++)scanf("%d",a+i),M[i]=(a[i]<0?a[i]+p:a[i]);
 	for(i=0;i<k;i++)scanf("%d",h+i),h[i]<0?h[i]+=p:0;
 	for(b[1]=res[0]=1;n;n>>=1,mul(b,b,M))
 		if(n&1)mul(res,b,M);
