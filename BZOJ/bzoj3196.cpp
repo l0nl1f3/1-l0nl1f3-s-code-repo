@@ -1,18 +1,36 @@
 #include<bits/stdc++.h>
 using namespace std;
-int read(){
-	int x=0,f=1;char ch;
-	for(ch=getchar();!isdigit(ch);ch=getchar())
-		if(ch=='-')f=-1;
-	for(;isdigit(ch);x=x*10+ch-'0',ch=getchar());
-	return x*f;
+namespace FF
+{ 
+char ch,B[1<<20],*S=B,*T=B;
+#define getc() (S==T&&(T=(S=B)+fread(B,1,1<<20,stdin),S==T)?0:*S++)
+#define isd(c) (c>='0'&&c<='9')
+int aa,bb;int r(){
+    while(ch=getc(),!isd(ch)&&ch!='-');ch=='-'?aa=bb=0:(aa=ch-'0',bb=1);
+    while(ch=getc(),isd(ch))aa=aa*10+ch-'0';return bb?aa:-aa;
+}
+}
+#define read FF::r
+#define BUFSIZE 5000000
+namespace fob {char b[BUFSIZE]={},*f=b,*g=b+BUFSIZE-2;}
+#define pob (fwrite(fob::b,sizeof(char),fob::f-fob::b,stdout),fob::f=fob::b,0)
+#define pc(x) (*(fob::f++)=(x),(fob::f==fob::g)?pob:0)
+struct foce {~foce() {pob; fflush(stdout);}} _foce;
+namespace ib {char b[100];}
+inline void pint(int x)
+{
+    if(x==0) {pc(48);return;}
+    //if(x<0) {pc('-'); x=-x;} //如果有负数就加上 
+    char *s=ib::b;
+    while(x) *(++s)=x%10, x/=10;
+    while(s!=ib::b) pc((*(s--))+48);
 }
 #define N 101234
 #define M 8001234
 int n,m,w[N],op[N][4],w1[N],w2[N],top,id,cnt;
 int find(int x){
 	int l=1;
-	for(int o,r=id;l<=r;w2[o=(l+r)/2]<x?l=o+1:r=o-1);
+	for(int o,r=id;l<r;w2[o=(l+r)/2]<x?l=o+1:r=o);
 	return l;
 }
 int ls[M],rs[M],s[M],rot[N],bit[N];
@@ -36,6 +54,7 @@ int bit_count(int x,int o=0){
 		if(o)res+=s[bit[r]];
 		else res+=s[ls[bit[r]]];
 	}
+	return res;
 }
 int bit_set(int x){
 	for(int r=x;r;r-=r&-r)bit[r]=rot[r];	
@@ -96,26 +115,32 @@ int main(){
 			w1[++top]=ts[3]; 
 		}else{
 			ts[1]=read();ts[2]=read();ts[3]=read();
-			w1[++top]=ts[3];
+			if(ts[0]!=2)w1[++top]=ts[3];
 		}
 	}
 	sort(w1+1,w1+top+1);
-	for(i=1;i<=top;i++)if(w1[i]!=w1[i-1])w2[++id]=w1[i];
+	for(w1[0]=-1<<30,i=1;i<=top;i++)if(w1[i]!=w1[i-1])w2[++id]=w1[i];
 	for(i=1;i<=n;i++)w[i]=find(w[i]);
+	for(i=1;i<=m;i++)if(op[i][0]!=2)
+		op[i][3]=find(op[i][3]);
+	rot[0]=build(1,id);
+	for(i=1;i<=n;i++)rot[i]=++cnt;
 	for(i=1;i<=n;i++)
 		for(j=i;j<=n;j+=j&-j)
 			edt(rot[j],rot[j],1,id,w[i],1);
 	for(i=1;i<=m;i++){
 		int *o=op[i];
 		if (o[0]==1){ 
-			bit_set(o[1]);  
+			bit_set(o[1]-1);  
 			bit_set(o[2]);  
-			printf("%d\n",pt_query(o[1]-1,o[2],1,id,o[3]) + 1);  
+			pint(pt_query(o[1]-1,o[2],1,id,o[3])+1);
+			pc('\n');
 		}  
 		if(o[0]==2){ 
 			bit_set(o[1]-1);  
 			bit_set(o[2]);  
-			printf("%d\n", w2[pt_kth(o[1]-1,o[2],1,id,o[3])]);  
+			pint(w2[pt_kth(o[1]-1,o[2],1,id,o[3])]);  
+			pc('\n');
 		}  
 		if(o[0]==3){
 			for(j=o[1];j<=n;j+=j&-j)
@@ -123,6 +148,7 @@ int main(){
 			w[o[1]]=o[3];  
 			for(j=o[1];j<=n;j+=j&-j)  
 				edt(rot[j],rot[j],1,id,w[o[1]],1);  
+				
 		}  
 		if(o[0]==4){
 			bit_set(o[1]-1);  
@@ -130,7 +156,8 @@ int main(){
 			int x=pt_query(o[1]-1,o[2],1,id,o[3]);  
 			bit_set(o[1]-1);  
 			bit_set(o[2]);  
-			printf("%d\n",w2[pt_kth(o[1]-1,o[2],1,id,x)]);  
+			pint(w2[pt_kth(o[1]-1,o[2],1,id,x)]);  
+			pc('\n');
 		}  
 		if(o[0]==5){ 
 			bit_set(o[1]-1);  
@@ -138,10 +165,11 @@ int main(){
 			int x = pt_query(o[1]-1,o[2],1,id,o[3]);  
 			bit_set(o[1]-1);  
 			bit_set(o[2]);  
-			int num=pt_sum(o[2],1,id,o[3],o[1]-1);  
+			int num=pt_sum(o[1]-1,o[2],1,id,o[3]);  
 			bit_set(o[1]-1);  
 			bit_set(o[2]);  
-			printf("%d\n", w2[pt_kth(1,id,x+num+1,o[1]-1,o[2])]);  
+			pint(w2[pt_kth(o[1]-1,o[2],1,id,x+num+1)]);  
+			pc('\n');
 		}  
 	}
 }
