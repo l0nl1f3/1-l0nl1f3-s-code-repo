@@ -1,8 +1,9 @@
+/*
 作者：吉如一
 链接：https://www.zhihu.com/question/59037149/answer/161810265
 来源：知乎
 著作权归作者所有，转载请联系作者获得授权。
-
+*/
 #include<iostream>
 #include<cmath>
 #include<cstring>
