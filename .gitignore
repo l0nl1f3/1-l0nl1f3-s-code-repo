@@ -1,6 +1,6 @@
 *.exe
-*.in
-*.out
+*/*.in
+*/*.out
 */*/data/*
 */*/source/*
 *.html
