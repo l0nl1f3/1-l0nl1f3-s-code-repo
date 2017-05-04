@@ -2,9 +2,9 @@
 using namespace std;
 int n;
 int main(){
-	freopen("tasksauthor2.out","w",stdout);
+	freopen("tasksauthor5.out","w",stdout);
 	int i,j;
-	printf("%d\n",n=100);
+	printf("%d\n",n=288);
 	int m=1000,v=2333;
 	for(i=0;i<n;i++,puts("")){
 		int e=min(m,15);
