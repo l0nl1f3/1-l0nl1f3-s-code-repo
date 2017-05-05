@@ -23,7 +23,7 @@ void dfs0(int x,int fa){
 	dia[find(x)]=max(dia[find(x)],fir[x]+sec[x]);
 } 
 void dfs1(int x,int fa){
-	vec[find(x)].push_back(dia[x]);	
+	vec[find(x)].push_back(fir[x]);	
 	for(int i=lst[x],b;b=e[i].to,i;i=e[i].nxt){
 		if(b==fa)continue;
 		mdf(b,fir[b]+1==fir[x]?sec[x]+1:fir[x]+1);
@@ -42,6 +42,7 @@ int main(){
 			dfs1(i,i);
 			vec[i].push_back(0);
 			sort(vec[i].begin(),vec[i].end());
+			for(int j=1;j<vec[i].size();j++)vec[i][j]+=vec[i][j-1];
 		}
 	for(;q--;){
 		scanf("%d%d",&x,&y);
@@ -60,7 +61,8 @@ int main(){
 			vec[x][i]-vec[x][i-1]+vec[y][o]-vec[y][o-1]+1<=max(dia[x],dia[y])?k=o,l=o+1:r=o-1);
 			ans=ans+(double)k*max(dia[x],dia[y])+(vec[y].size()-k-1)*(vec[x][i]-vec[x][i-1]+1)+vec[y][vec[y].size()-1]-vec[y][k];
 		}
-		printf("%.10lf\n",mp[make_pair(x,y)]=ans);
+		if(x>y)swap(x,y);
+		printf("%.10lf\n",mp[make_pair(x,y)]=ans/(vec[x].size()-1)/(vec[y].size()-1));
 	}
 }
 
