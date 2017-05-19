@@ -31,7 +31,7 @@ double ans,p[N],q[N];
 struct tag{Mat p,s;}T[888888];
 tag merge(tag p,tag l,tag r){
 	return p=(tag){l.p*r.p,l.p*r.s+l.s*r.p};
-}
+} 
 void build(int p,int l,int r){
 	if(l==r)
 		T[p].p.init(T[p].s[0][0]=::p[l],T[p].s[1][0]=::q[l]);	
