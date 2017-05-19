@@ -11,13 +11,13 @@ int main(){
 	for(i=1;i<=n;i++){
 		while(j<26&&!a[j])j++;
 		while(k>=0&&!b[k])k--;
-		if(y==2&&j>=k){
-			if((i&1)^(n&1))y=1;
-		}else y=0;
-		if((i^y)&1)	
-			--a[c[i]=j];
-		else
+		if(y==2&&j>=k)
+			if((i&1)==(n&1))y=0;
+			else y=1;
+		if((i-1^y)&1)	
 			--b[c[i]=k];
+		else
+			--a[c[i]=j];
 	}
 	for(i=1;i<=n;i++)cout<<char(c[i]+'a'); 
 }
