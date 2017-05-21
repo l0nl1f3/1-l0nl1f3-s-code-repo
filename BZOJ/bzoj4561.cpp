@@ -1,35 +1,51 @@
 #include<bits/stdc++.h>
+#define N 401234
 using namespace std;
-#define ll long long
-#define p 2333
-int f[p],inv[p],s[p][p];
-int c(ll n,ll m){
-    if(!m)return 1;
-    if(n<m)return 0;
-    if(n<p&&m<p)return f[n]*inv[m]%p*inv[n-m]%p;
-    return c(n/p,m/p)*c(n%p,m%p)%p;
+int read(){
+    int x=0,f=1;char ch;
+    for(ch=getchar();!isdigit(ch);ch=getchar())
+        if(ch=='-')f=-1;
+    for(;isdigit(ch);x=x*10+ch-'0',ch=getchar());
+    return x*f;
 }
-int exp(int a,int n){
-    int res=1;
-    for(;n;n>>=1,a*=a%=p)
-        if(n&1)res*=a%=p;
-    return res;
-}
-int cnp(ll n,ll k){
-    if(k<0)return 0;
-    return (cnp(n/p,k/p-1)*s[n%p][p-1]%p+c(n/p,k/p)*s[n%p][k%p]%p)%p;
-}
-int main(){
-    int i,j;
-    for(i=f[1]=s[0][0]=1,i++;i<p;i++)f[i]=f[i-1]*i%p;
-    for(inv[i=p-1]=exp(f[p-1],p-2);i;i--)inv[i-1]=inv[i]*i%p;
-    for(i=0;i<p;i++)for(j=s[i][0]=1;j<p;j++)s[i][j]=(s[i][j-1]+c(i,j))%p;
-    scanf("%d",&j);
-    while(j--){
-        ll n,k;
-        scanf("%lld%lld",&n,&k);
-        printf("%d\n",cnp(n,k));
-    } 
-    return 0;
+int n,cn,pn,lb,sgn[N];long long ans;
+struct circle{int x,y,r;}c[N];
+struct line{int i,x,sgn;}p[N];
+double sqr(double x){return x*x;}
+bool cmp(line a,line b){
+    return a.x<b.x;
 } 
-?
+struct height{
+    int i,k;
+    double h(){
+        return c[i].y+k*sqrt(sqr(c[i].r)-sqr(lb-c[i].x));
+    }
+};
+bool operator<(height a,height b){
+    return a.h()!=b.h()?a.h()<b.h():a.k<b.k;
+}
+set<height>s;
+int main(){
+    int i,j,k;
+    for(n=read();n--;){
+        i=read();j=read();k=read();
+        c[++cn]=(circle){i,j,k};
+        p[++pn]=(line){cn,i-k,1};
+        p[++pn]=(line){cn,i+k,-1};
+    }
+    sort(p+1,p+pn+1,cmp);
+    for(i=1;lb=p[i].x,j=p[i].i,i<=pn;i++){
+        if(~p[i].sgn){
+            set<height>::iterator it=s.upper_bound((height){j,1});
+            sgn[j]=(it==s.end()?1:(it->k==1?sgn[it->i]*-1:sgn[it->i]));
+            s.insert((height){j,1});    
+            s.insert((height){j,-1});
+        }else{
+            s.erase((height){j,1});
+            s.erase((height){j,-1});
+        }
+    }
+    for(i=1;i<=cn;i++)ans=ans+(long long)sgn[i]*c[i].r*c[i].r;
+    printf("%lld",ans);
+    return 0;
+}
