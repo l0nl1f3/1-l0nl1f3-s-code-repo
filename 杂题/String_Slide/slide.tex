@@ -1,0 +1,59 @@
+\documentclass[notheorems]{beamer}
+\usepackage{latexsym}
+\usepackage{amsmath,amssymb}
+\usepackage{color,xcolor}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{amsthm}
+\usepackage[UTF8]{ctex}
+\usepackage{listings}
+
+\usetheme{Szeged}
+\usefonttheme[onlymath]{serif}
+\usecolortheme{default}
+\newtheorem{proposition}{命题}
+\newtheorem{theorem}{定理}
+\newtheorem{definition}{定义}
+\newtheorem{example}{例}
+
+\renewcommand\figurename{图}
+\renewcommand\tablename{表}
+
+\setbeamertemplate{theorems}[numbered]
+\begin{document}
+
+\title[字符串算法选讲]{字符串算法选讲}
+\author[l0nl1f3]{l0nl1f3}
+\institute[福州第三中学] {福州第三中学}
+\date[June, 2017]{2017年6月}
+\frame{\titlepage}
+
+\begin{frame}
+\frametitle{Tips}
+\begin{itemize}[]  
+\item 忘了Tips要写什么了
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{KMP}
+\begin{itemize}[]
+\item 给定一个长度为$n$字符串$S$,给定一个长度为$m$字符串$T$,问$T$在$S$中出现了几次 
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{KMP}
+\begin{itemize}[]
+\item 朴素匹配,枚举起点$l$,比较$s_{l\ldots l+m-1}$和$T$是否相等,遇到不等就移动$l$
+\item 复杂度$O(nm)$
+\pause
+\item KMP(Knuth–Morris–Pratt algorithm),俗称看毛片算法
+\pause
+\item 定义一个串的border为满足$s_{1\ldots x} = s_{n-x+1\ldots n}$的前缀
+\pause
+\item KMP的next数组存储的是每个前缀的最大border的长度
+\end{itemize}
+\end{frame}
+
+\end{document}
