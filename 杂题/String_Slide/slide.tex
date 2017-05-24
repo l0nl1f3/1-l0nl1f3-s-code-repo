@@ -80,10 +80,99 @@
 \frametitle{Easy Period Problem}
 \begin{itemize}[]
 \item 对于一个字符串$T$,如果存在字符串$A$,使得$A+A+\ldots (x个A)= T$,其中加法为顺次连接
-\item 则称$T=A^x$,求满足条件的最短$A$
+\item 则称$T=A^x$,求满足条件的最短$A$的长度
 \pause
-\item 
+\item 设$T=n-next_n$,若$n \bmod T = 0$,则答案为$T$
+\item 正确性如何？
 \end{itemize}
 \end{frame}
+
+\begin{frame}
+\frametitle{Trie}
+\begin{itemize}[]
+\item 给定$n$个串,第$i$个串长为$l_i$,$Q$次询问$(x,y)$的最长公共前缀
+\item $\sum l_i \leq 5*10^6,Q\leq 10^6,n\leq 10^5$
+\pause
+\item 建立一棵26叉前缀树(trie).每条边上有一个字母
+\item 根到某个点的路径组成一个前缀
+\item 每次插入一个字符串时，就在trie树上把对应路径“填满”，并记录末字符所在的节点
+\pause
+\item 将公共前缀查询转化为LCA查询
+\item $O(\sum_{l_i}\log \sum{l_i} + Q)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trie + KMP}
+\begin{itemize}[]
+\item 给定$n$个串,第$i$个串长为$l_i$
+\item 再给定一个长度为$m$的文本串,问有多少个串在文本串中出现过
+\item $\sum l_i \leq 5*10^5,m\leq 10^6,n\leq 10^4$
+\pause
+\item 大力KMP,复杂度$O(nm)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trie + KMP}
+\begin{itemize}[]
+\item Trie + KMP = Aho-Corasick Automation
+\pause
+\item 对于Trie上的每一个前缀，我们任然可以建立一个像kmp一样的next数组
+\item 对于Trie进行bfs，考虑将要遍历$i$节点的$c$孩子
+\pause
+\item 若$c$孩子不存在,则将孩子指针指向$next_i$的$c$孩子
+\item 否则将该孩子的$next$指向$next_i$节点的$c$孩子
+\pause
+\item 记录每个点的$cnt$值为整串结尾在该点串数
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trie + KMP}
+\begin{itemize}[]
+\item 那么我们对文本串进行一个Trie上的kmp即可
+\item $O(\sum l_i + m)$
+\item HDU2222
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trie + KMP - Trie}
+\begin{itemize}[]
+\item 给出n个字符串,询问每个字符串在所有字符串中出现的次数之和
+\item $n\leq 10^5,\sum l_i \leq 10^6$
+\pause
+\item 暴力AC自动机的复杂度？？？
+\pause
+\item $O((\sum l_i)^2)$
+\pause
+\item 我们建立一棵fail树,我们把每个节点$x$向$next_x$连边
+\pause
+\item 每个点都是一个字符串的前缀，而且每个字符串的每个前缀在这棵树上都对应着一个点。
+\item 其次，由于fail指针，每个点父节点的字符串都是这个点字符串最长的存在的后缀
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Trie + KMP - Trie}
+\begin{itemize}[]
+\item 插入字符串时记录每个点被经过的次数
+\item 最后在fail树上答案体现为子树和
+\item 复杂度$O(n+\sum l_i)$,BZOJ3172
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Trie + KMP - Trie}
+\begin{itemize}[]
+\item 插入字符串时记录每个点被经过的次数
+\item 最后在fail树上答案体现为子树和
+\item 复杂度$O(n+\sum l_i)$,BZOJ3172
+\end{itemize}
+\end{frame}
+
+
 
 \end{document}
