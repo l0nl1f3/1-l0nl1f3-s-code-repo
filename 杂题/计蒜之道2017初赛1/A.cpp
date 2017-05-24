@@ -15,12 +15,6 @@ int main(){
 		scanf("%d%d",&x,&y);
 		Put(x,y);
 	}
-/*	memset(mp,0,sizeof(mp));
-	a.clear();b.clear(); 
-	for(i=1;i<=m;i++){
-		scanf("%d%d",&x,&y);
-		Put(x,y);
-	}*/
 	for(i=-3;i<=3;i++)
 		if(i&&a[i]>=3)++p;
 	for(i=-3;i<=3;i++)
