@@ -138,7 +138,7 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Trie + KMP - Trie}
+\frametitle{Trie + KMP - Tree}
 \begin{itemize}[]
 \item 给出n个字符串,询问每个字符串在所有字符串中出现的次数之和
 \item $n\leq 10^5,\sum l_i \leq 10^6$
@@ -156,7 +156,7 @@
 
 
 \begin{frame}
-\frametitle{Trie + KMP - Trie}
+\frametitle{Trie + KMP - Tree}
 \begin{itemize}[]
 \item 插入字符串时记录每个点被经过的次数
 \item 最后在fail树上答案体现为子树和
@@ -165,14 +165,36 @@
 \end{frame}
 
 \begin{frame}
-\frametitle{Trie + KMP - Trie}
+\frametitle{Manacher}
 \begin{itemize}[]
-\item 插入字符串时记录每个点被经过的次数
-\item 最后在fail树上答案体现为子树和
-\item 复杂度$O(n+\sum l_i)$,BZOJ3172
+\item 给定一个长度为$n$的字符串$S$,求$S$的最长回文子串
+\item 回文的定义为正反读是一样的,比如$qzzq$和$zqz$就是回文,而$zzq$就不是回文
+\item $n\leq 10^6$
+\pause
+\item 而值得一提的是,$(())$不是回文,而$(((($是
 \end{itemize}
 \end{frame}
 
 
+\begin{frame}
+\frametitle{Manacher}
+\begin{itemize}[]
+\item 枚举回文中心,暴力扩展,复杂度$O(n^2)$
+\pause
+\item 设$r_i$为$i$为中心的回文半径(偶回文串先不管)
+\item 懒得写了再说
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Palindromic Automation}
+\begin{itemize}
+\item 给你一个由小写拉丁字母组成的长度为$n$的字符串 $S$。我们定义 $S$ 的一个子串的存在值为这个子串在 $S$ 中出现的次数乘以这个子串的长度。
+\item 对于给你的这个字符串 $S$，求所有回文子串中的最大存在值。
+\item $n\leq 3*10^5$
+\pause
+\item 这个就是一个...回文树啦...上次讲过啦
+\end{itemize}
+\end{frame}
 
 \end{document}
