@@ -182,9 +182,41 @@
 \item 枚举回文中心,暴力扩展,复杂度$O(n^2)$
 \pause
 \item 设$r_i$为$i$为中心的回文半径(偶回文串先不管)
-\item 懒得写了再说
+\item 添加辅助变量mx和p，分别表示已有回文半径覆盖到的最右边界和对应中心
+\pause
+\item $i$关于$p$的对称点为$j=2p-i$,我们进行分类讨论
 \end{itemize}
 \end{frame}
+
+\begin{frame}
+\frametitle{Manacher}
+\begin{itemize}[]
+\item 对于一个$i$,若$mx > i$,则$r_i = \min(r_{2p-i},mx-i)$,否则$r_i = 1$
+\pause
+\item 暴力增大$r_i$
+\pause
+\item 更新$mx,p$
+\pause
+\item 如何处理偶回文串？No comment
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{回文计数1}
+\begin{itemize}
+\item 给定一个长度为$n$的字符串$S$,求前$k$长的长度为奇数的回文子串长度之积,对一个正儿八经的质数取模
+\item $n\leq 10^7,k\leq n^2$
+\pause
+\item 当然先跑一遍Manacher
+\pause
+\item 我们考虑求出来每种长度的回文子串的个数,记为$cnt_i$
+\pause
+\item 我们每次可以确定中心为$i$的回文串的长度区间
+\pause
+\item 差分+前缀和即可
+\end{itemize}
+\end{frame}
+
 
 \begin{frame}
 \frametitle{Palindromic Automation}
@@ -193,7 +225,34 @@
 \item 对于给你的这个字符串 $S$，求所有回文子串中的最大存在值。
 \item $n\leq 3*10^5$
 \pause
-\item 这个就是一个...回文树啦...上次讲过啦
+\item 这个就是一个...回文树(即回文自动机)啦...上次讲过啦
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Palindromic Automation}
+\begin{itemize}
+\item 回文树有两个根，分别是odd和even
+\item odd的长度是0,even的长度是1
+\pause
+\item 每个点代表一个回文子串，此时$i \to ch_c$的一步转移代表的是在$s_i$左右各加上一个字符$c$，组成新的回文子串
+\pause
+\item 回忆AC自动机的fail指针
+\item 我们给回文树定义一个fail指针，指向该点最长回文后缀对应所在的点
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Palindromic Automation}
+\begin{itemize}
+\item 特别地，odd的fail指向自己,even的fail指向odd
+\pause
+\item 我们考虑如何构建这个回文树
+\item 设插入的新字符为$S_i$,我们暴力顺着fail跳找到一个$S_{i-fail_x-1}=S_{i}$的$x$，把新字符插在$x$的孩子
+\pause
+\item 如何定向他的fail指针？再跳一步即可
+\pause
+\item　复杂度为什么是对的？
 \end{itemize}
 \end{frame}
 
