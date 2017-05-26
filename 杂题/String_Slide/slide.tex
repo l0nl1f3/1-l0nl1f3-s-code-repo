@@ -98,7 +98,7 @@
 \item 每次插入一个字符串时，就在trie树上把对应路径“填满”，并记录末字符所在的节点
 \pause
 \item 将公共前缀查询转化为LCA查询
-\item $O(\sum_{l_i}\log \sum{l_i} + Q)$
+\item $O(\sum {l_i}\log \sum{l_i} + Q)$
 \end{itemize}
 \end{frame}
 
@@ -168,7 +168,7 @@
 \frametitle{Manacher}
 \begin{itemize}[]
 \item 给定一个长度为$n$的字符串$S$,求$S$的最长回文子串
-\item 回文的定义为正反读是一样的,比如$qzzq$和$zqz$就是回文,而$zzq$就不是回文
+\item 回文的定义为正反读是一样的,比如qzzq和zqz就是回文,而zzq就不是回文
 \item $n\leq 10^6$
 \pause
 \item 而值得一提的是,$(())$不是回文,而$(((($是
@@ -219,7 +219,7 @@
 
 
 \begin{frame}
-\frametitle{Palindromic Automation}
+\frametitle{APIO2014 Palindrome}
 \begin{itemize}
 \item 给你一个由小写拉丁字母组成的长度为$n$的字符串 $S$。我们定义 $S$ 的一个子串的存在值为这个子串在 $S$ 中出现的次数乘以这个子串的长度。
 \item 对于给你的这个字符串 $S$，求所有回文子串中的最大存在值。
@@ -253,6 +253,37 @@
 \item 如何定向他的fail指针？再跳一步即可
 \pause
 \item　复杂度为什么是对的？
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{Palindromic Automation}
+\begin{itemize}
+\item 对于APIO2014的这道题,我们只需要将$x$的$cnt$累加到$fail_x$即可
+\end{itemize}
+\end{frame}
+
+
+\begin{frame}
+\frametitle{2016 Multi-University Training Contest 5:Interesting}
+\begin{itemize}
+\item 给定一个长度为$n$字符串$S$,求出所有的$i < j < k, S_{i \ldots j},S_{j+1 \ldots k}$都是回文串的$(i,j,k)$的$i*k$之和
+\item 5组数据,$n\leq 10^6$ 
+\pause
+\item 当然这个题可以通过Manacher和一番精彩操作来实现,这里不细述
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+\frametitle{2016 Multi-University Training Contest 5:Interesting}
+\begin{itemize}
+\pause
+\item 注意到上面提到的这种数据结构可以很好的实现求出以$i$结尾的回文串的相关信息，枚举$j$即可
+\pause
+\item 设左右各有长度为$a$和$b$回文串，$\sum i*k = \sum \sum \sum (j-a)*(j+b)$
+\item 设左端长度和为$ls$,右端为$rs$。左端个数和为$ln$,右端个数和为$rn$
+\pause
+\item $\sum \sum \sum (j-a)*(j+b) = \sum_{j=1}^n ps*ls*j^2+j*(rn*ln - rs*lb - rn-ls) - rn*(ls - ln)$ 
 \end{itemize}
 \end{frame}
 
