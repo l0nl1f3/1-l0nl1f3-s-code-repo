@@ -182,7 +182,7 @@ int main(){
 	build31();gans<cmp2>();
 	build32();gans<cmp1>();
 	build33();gans<cmp1>();
- 	for(i=1;i<=n;i++)printf("%lld\n",sum+ans[i]);
+ 	for(i=1;i<=n;i++)printf("%lld\n",org+ans[i]);
 	return 0;
 }
  
