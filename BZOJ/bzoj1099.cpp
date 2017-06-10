@@ -154,7 +154,7 @@ int main(){
 	scanf("%d",&n);
 	for(i=1;i<=n;i++){
 		scanf("%d",h+i);
-		org+=L(i+1,i);
+		org+=L(i-1,i);
 	}
 	if(n>2){
 		f[1]=L(1,2);
@@ -165,24 +165,25 @@ int main(){
 			f[i]=L(i,i-1)+L(i,i+1);
 	    }
 	    for(i=3;i<=n;i++)	cmin(ans[1],Q(1,i)),cmin(ans[i],Q(1,i));
-	    for(i=2;i<n-1;i++)	cmin(ans[n],Q(i,n)),cmin(ans[i],Q(i,n));
+	    for(i=2;i<n;i++)	cmin(ans[n],Q(i,n)),cmin(ans[i],Q(i,n));
 	    for(i=1;i<n;i++)	cmin(ans[i],Q(i,i+1)),cmin(ans[i+1],Q(i,i+1));
 	} 
+	printf("%d\n",org);
+ 	for(i=1;i<=n;i++)printf("%d\n",ans[i]);
 	if(n>4){
 		for(i=1;i<=n;i++)B[i]=H[i]=(ll)h[i]*n+i-1;
 		sort(B+1,B+n+1);
 		for(i=1;i<=n;i++)loc[i]=findl(H[i],1);
+		build11();gans<cmp2>();
+		build12();gans<cmp1>();
+		build13();gans<cmp1>();
+		build21();gans<cmp2>();
+		build22();gans<cmp1>();
+		build23();gans<cmp1>();
+		build31();gans<cmp2>();
+		build32();gans<cmp1>();
+		build33();gans<cmp1>();
 	}
-	build11();gans<cmp2>();
-	build12();gans<cmp1>();
-	build13();gans<cmp1>();
-	build21();gans<cmp2>();
-	build22();gans<cmp1>();
-	build23();gans<cmp1>();
-	build31();gans<cmp2>();
-	build32();gans<cmp1>();
-	build33();gans<cmp1>();
- 	for(i=1;i<=n;i++)printf("%lld\n",org+ans[i]);
 	return 0;
 }
  
