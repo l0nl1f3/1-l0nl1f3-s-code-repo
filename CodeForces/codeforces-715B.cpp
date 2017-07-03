@@ -27,7 +27,7 @@ namespace Dijkstra{
 	#define mpa make_pair
 	using namespace __gnu_pbds;
 	typedef __gnu_pbds::priority_queue<pa,greater<pa>,pairing_heap_tag > heap;
-	heap::point_iterator id[N];
+	heap::point_iterator id[N];bool v[N];
 	ll dijkstra(int s,int t){
 	    heap q;int i,b;
 	    for(i=1;i<=n;i++)dis[i]=inf,id[i]=0;
@@ -56,7 +56,7 @@ int main(){
 	if(dijkstra(s,t)<L)return puts("NO"),0;
 	for(i=1;i<=m;i++)if(!c[i])lnk(a[i],b[i],1);
 	if(dijkstra(s,t)>L)return puts("NO"),0;
-	ll l=0,r,R=inf,o,ans;
+	ll l,r,l1,R=inf,o,ans;
 	while(l<=R){
 		o=(l+R)/2;
 		build(0,o);
@@ -64,6 +64,7 @@ int main(){
 			l=o+1;
 		else R=o-1;
 	}
+	l1=l;
 	l=1;r=m;
 	while(l<=r){
 		o=(l+r)/2;
@@ -74,7 +75,7 @@ int main(){
 	}
 	puts("YES");
 	for(i=1;i<=m;i++)
-		printf("%d %d %lld\n",a[i]-1,b[i]-1,c[i]?c[i]:(i<=r?l:R));
+		printf("%d %d %lld\n",a[i]-1,b[i]-1,c[i]?c[i]:(i<=r?l1:R));
 	return 0;
 }
 
