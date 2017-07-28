@@ -89,7 +89,7 @@ int main() {
 		int l = cur.l, r = cur.r;
 		ans += a[l] + b[r];
 		if(l < r) seg_modify(1, 0, n, l, r - 1, 1);
-		if(l > r) seg_modify(1, 0, n, r, l 	- 1, -1);
+		if(l > r) seg_modify(1, 0, n, r, l - 1, -1);
 		a[l] = b[r] = ~0U >> 2;
 		sig_modify(1, 0, n, l);
 		sig_modify(1, 0, n, r);
