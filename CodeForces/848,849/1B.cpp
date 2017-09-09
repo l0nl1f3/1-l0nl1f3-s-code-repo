@@ -29,11 +29,15 @@ bool cmpp(info a, info b) {
 	return a.p < b.p;
 }
 
+bool cmpd(info a, info b) {
+	return a.d < b.d;
+}
+
 int x[MaxN], y[MaxN];
 int n1, n2;
 
 const int N = 101234;
-deque<int> v[MaxN * 3], u[MaxN * 3];
+queue<int> v[MaxN << 1], u[MaxN << 1];
 
 int main() {
 	int i;
@@ -56,31 +60,28 @@ int main() {
 	sort(a + 1, a + n1 + 1, cmpp);
 	sort(b + 1, b + n2 + 1, cmpp);
 
-	for(i = 1; i <= n2; i++) {
+	for(i = n2; i; i--) {
 		int d = b[i].d + N;
-		u[d].push_front(b[i].i);
-		v[d].push_front(b[i].p);
+		u[d].push(b[i].i);
+		v[d].push(b[i].p);
 	}
 	
 	for(i = 1; i <= n1; i++) {
 		int d = a[i].d + N;
-		u[d].push_back(a[i].i);
+		u[d].push(a[i].i);
 		x[u[d].front()] = a[i].p;
 		y[u[d].front()] = h;
-		u[d].pop_front();
+		u[d].pop();
 	}
 	
-	for(i = 1; i < (MaxN << 3); i++) {
+	for(i = 1; i < (MaxN << 1); i++) {
 		while(!u[i].empty()) {
 			x[u[i].front()] = w;
 			y[u[i].front()] = v[i].front();
-			u[i].pop_front();
-			v[i].pop_front();
+			u[i].pop();
+			v[i].pop();
 		}
 	}
 	for(i = 1; i <= n; i++) printf("%d %d\n", x[i], y[i]);
 	return 0;
 }
-
-
-
