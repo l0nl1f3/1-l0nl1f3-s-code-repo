@@ -42,9 +42,7 @@ int run_2() {
 	int i, j, ans = 0;
 	
 	int wayA = 0; 
-	
-	//for(i = 1; i <= n; i++) cout << deg[i] << " "; cout << endl;
-	// 1 - 2 - 3 
+
 	for(i = 1; i <= m; i++) {
 		int x = u[i], y = v[i];
 		wayA += ((deg[x] - 1) + (deg[y] - 1)) % P;
@@ -62,28 +60,6 @@ int run_2() {
 	cout << ans << endl;
 	
 	return ans;
-	/*
-	int t = 0;
-	for(i = 1; i <= m; i++) {
-		for(j = 1; j <= m; j++) {
-			int s = 0;
-			for(s; s < (1 << n); s++) {
-				int c1 = (s >> (u[i] - 1)) & 1;
-				int c2 = (s >> (v[i] - 1)) & 1;
-				int c3 = (s >> (u[j] - 1)) & 1;
-				int c4 = (s >> (v[j] - 1)) & 1;
-				if(c1 && c2 && c3 && c4) {
-					ans++;
-				}
-			}
-			if(u[i] == u[j] || v[i] == v[j] || u[i] == v[j] || u[j] == v[i]) {
-			}else 
-				++t;
-		}
-	}
-	
-	cout << t << endl; 
-	*/
 }
  
 vector<pair<int, int> > tob;
