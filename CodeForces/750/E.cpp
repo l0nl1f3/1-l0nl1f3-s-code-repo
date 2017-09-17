@@ -17,13 +17,12 @@ int getint() {
 	return x * f;
 }
 
-const int M = 64; //M>=n+10
+const int M = 262144; //M>=n+10
 const int MaxN = M << 1;
 
 struct info { 
 	int f[5][5]; 
-	info() { memset(f, 0x3f, sizeof(f)); }
-	info(char c) {
+	info(char c = 0) {
 		int i, j;
 		for(i = 0; i < 5; i++) for(j = 0; j < 5; j++) f[i][j] = i == j ? 0 : 1e9;
 		char s[] = "2017";
@@ -37,6 +36,11 @@ struct info {
 	    	f[4][4] = 1;
 	    }
 	}
+	void print() {return;
+		for(int i = 0; i < 5; i++, puts(""))
+			for(int j = 0; j < 5; j++)
+				printf("%d ", f[i][j]);
+	}
 };
 
 info seg[MaxN]; 
@@ -44,16 +48,17 @@ info seg[MaxN];
 info operator + (info l, info r) {
 	info x;
 	for(int i = 0; i < 5; i++)
-		for(int j = 0; j < 5; j++)
-			for(int k = 0; k <= 5; k++)
+		for(int j = 0; j < 5; j++) {
+			x.f[i][j] = 1e9;
+			for(int k = 0; k < 5; k++)
 				cmin(x.f[i][j], l.f[i][k] + r.f[k][j]);
+		}
 	return x;
 }
  
+int n, q, pre[MaxN], s[MaxN]; char a[MaxN];
 info query(int l, int r) {
 	info qL, qR;
-	for(; l <= r; l++) qL = qL + seg[l + M]; return qL;
-	
 	for(l += M - 1, r += M + 1; l ^ r ^ 1; l >>= 1, r >>= 1) {
 		if(~l & 1) qL = qL + seg[l ^ 1];
 		if(r & 1) qR = seg[r ^ 1] + qR;
@@ -61,7 +66,6 @@ info query(int l, int r) {
 	return qL + qR;
 }
 
-int n, q, pre[MaxN], s[MaxN]; char a[MaxN];
 int main(){
 	int i;
 	n = getint(); q = getint();
