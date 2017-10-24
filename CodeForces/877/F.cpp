@@ -43,7 +43,7 @@ int main() {
 	for(i = 1; i <= n; i++) t[i] = s[i] = s[i - 1] + a[i];
 	
 	sort(t, t + n + 1);
-	for(i = 0; i <= n; i++) mp[t[i]] = i;
+	for(i = 0; i <= n; i++) mp[t[i]] = i + 1;
 	
 	for(i = 0; i <= n; i++) {
 		Rg[i] = mp[s[i] + K];
@@ -80,4 +80,3 @@ int main() {
 	for(i = 1; i <= m; i++) printf("%lld\n", ans[i]);
 	return 0;
 }
-
