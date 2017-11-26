@@ -36,7 +36,7 @@ int main() {
 	f[0] = 1;
 	for(i = 1; i <= n; i++)
 		for(j = i; j; j--)
-			f[j] = (LL) (f[j] + f[j - 1] * a[i]) % P;
+			f[j] = (LL) (f[j] + (LL) f[j - 1] * a[i]) % P;
 	g[0] = 1;
 	for(i = 1; i <= n; i++)
 		g[i] = (LL) g[i - 1] * (K - i + 1) % P;
