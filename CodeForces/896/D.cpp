@@ -1,3 +1,6 @@
+#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,unsafe-math-optimizations")
+#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+
 #include <bits/stdc++.h>
 
 #define fir first
@@ -18,22 +21,24 @@ int inp() {
 
 struct comp{ 
 	double r, i;
-	comp() { }	
-	comp(double a, double b) : r(a), i(b) { }
+	inline comp() { }	
+	inline comp(double a, double b) : r(a), i(b) { }
 };
 
 const int N = (1 << 19), MaxN = (N << 1) + 10;
 const int K = 32767, L = 15;
 int P;
+
 inline comp add(comp a, comp b) { return comp(a.r + b.r, a.i + b.i); }
 inline comp sub(comp a, comp b) { return comp(a.r - b.r, a.i - b.i); }
 inline comp mul(comp a, comp b) { return comp(a.r * b.r - a.i * b.i, a.r * b.i + a.i * b.r);}
 inline comp div(comp a, double b){	return comp(a.r/b, a.i/b); }
 inline comp conj(comp x) { return comp(x.r, -x.i); }
 
-inline int add(int x, int y) { return (x + (LL) y) % P; }
-inline int sub(int x, int y) {	return (x - (LL) y + P) % P; }
+inline int add(int x, int y) { return x + (LL) y >= P ? x + (LL) y - P : x + y; }
+inline int sub(int x, int y) {	return x >= y ? x - y : x - (LL) y + P; }
 inline int mul(int x, int y) {	return (LL)x * y % P; }
+
 int exp(int x, LL n) {
 	int res = 1;
 	for(; n; n >>= 1) {
@@ -44,7 +49,7 @@ int exp(int x, LL n) {
 	return res;
 }
 
-comp eps[MaxN]; int rv[MaxN];
+comp eps[MaxN]; 
 void init() {
 	double pi = acos(-1);
 	for(int i = 0; i < N; i++)
@@ -117,8 +122,8 @@ void pow(int x[], int y[], int n) {
 	int sN = 3; nL = 1;
 	for(; n; n >>= 1) {
 		if(n & 1) 
-			conv(sN, x, nL, y, nL + sN, y), nL = min(nL + sN, 2 * :: n + 3);
-		conv(sN, x, sN, x, sN << 1, x, 1); sN <<= 1;
+			conv(sN, x, nL, y, min(nL + sN, 2 * :: n + 3), y), nL = min(nL + sN, 2 * :: n + 3);
+		conv(sN, x, sN, x, min(sN << 1, 2 * :: n + 3), x, 1); sN = min(sN << 1, 2 * :: n + 3);
 	}
 }
 
@@ -131,8 +136,7 @@ int main() {
 	int ans; init();
 	cin >> n >> P >> l >> r;
 	x[0] = x[1] = x[2] = 1;pow(x, y, n);
-	if(l == r) ans = ((LL) res(r) - res(r + 2) + P) % P;
-	else ans = ((LL) res(l) + res(l + 1) - res(r + 1) - res(r + 2)) % P; 
+	ans = ((LL) res(l) + res(l + 1) - res(r + 1) - res(r + 2)) % P; 
 	cout << ((LL) ans + P) % P << endl;
 	return 0;
 }
