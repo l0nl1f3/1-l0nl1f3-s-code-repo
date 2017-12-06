@@ -1,5 +1,5 @@
-#pragma GCC optimize("Ofast,unroll-loops,no-stack-protector,unsafe-math-optimizations")
-#pragma GCC target("sse,sse2,sse3,ssse3,sse4,popcnt,abm,mmx,avx,tune=native")
+#pragma GCC optimize("Ofast,no-stack-protector")
+#pragma GCC target("avx") 
 
 #include <bits/stdc++.h>
 
@@ -81,8 +81,17 @@ inline void idft(int n, comp x[]) {
     for (int i = 0; i < n; i++) x[i] = div(x[i], n);
 }
 
+int t[MaxN];
 void conv(int na, int a[], int nb, int b[], int nc, int c[], int same = 0) {
-    int n, i;
+    int n, i, j;
+    if((LL) na * nb <= 3e4)  {
+		for(i = 0; i < nc; i++) t[i] = 0;
+		for(i = 0; i < na; i++)
+    		for(j = 0; j < nb && j + i < nc; j++)
+    			t[i + j] = add(t[i + j], mul(a[i], b[j]));
+		for(i = 0; i <= nc; i++) c[i] = t[i];
+		return;
+	}
     static comp x[MaxN], y[MaxN], z[MaxN], w[MaxN];
     for(n = 1; n < na + nb - 1; n <<= 1);
     for(i = 0; i < n; i++){
