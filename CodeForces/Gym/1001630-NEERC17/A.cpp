@@ -18,7 +18,7 @@ int read() {
 	return x * f;
 }
 
-const int MaxN = 201234, MaxNode = MaxN * 20, U = 2e9;
+const int MaxN = 201234, MaxNode = MaxN * 40, U = 2e9;
 
 int n, segn, rot, lc[MaxNode], rc[MaxNode], x[MaxN], y[MaxN];
 set<int> seg[MaxNode]; vector<int> t;
@@ -64,7 +64,7 @@ int main() {
 				LL dis = (LL) (x[i] - x[p]) * (x[i] - x[p]) + (LL) (y[i] - y[p]) * (y[i] - y[p]);
 				if(dis < (LL) y[p] * y[p]) {
 					ans = p;
-					insert(rot, -U, U, x[p] - y[p], x[p] + y[p], 0);
+					insert(rot, -U, U, x[p] - y[p], x[p] + y[p], p, 0);
 					break;
 				}
 			}
