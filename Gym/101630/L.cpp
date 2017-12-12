@@ -18,10 +18,10 @@ int read() {
 
 const int MaxN = 101234, MaxL = 17;
 
-int n, m, dep[MaxN], u[MaxN], v[MaxN], f[MaxN][MaxL], lp[MaxN], rp[MaxN], cnt[MaxN], c[MaxN];
-vector<int> e[MaxN], p[MaxN];
+int n, m, dep[MaxN], u[MaxN], v[MaxN], a[MaxN], b[MaxN], f[MaxN][MaxL], cnt[MaxN], c[MaxN], sig[MaxN];
+vector<int> e[MaxN], g[MaxN], h[MaxN]; map<int, int> vis;
 
-int in[MaxN], out[MaxN], dn;
+int in[MaxN], dn;
 void dfs(int x, int fa = 0) {
 	f[x][0] = fa; in[x] = ++dn;
 	for(int i = 1; i < MaxL; i++) f[x][i] = f[f[x][i - 1]][i - 1];
@@ -30,18 +30,25 @@ void dfs(int x, int fa = 0) {
 		dep[y] = dep[x] + 1;
 		dfs(y, x);
 	}
-	out[x] = dn;
 } 
 
+int deg[MaxN];
+void addEdge(int x, int y) {
+	++deg[x]; ++deg[y];
+	g[x].emplace_back(y);
+	g[y].emplace_back(x);
+}
+
 void dfs2(int x, int fa = 0) {
-	cnt[x] += cnt[fa];
 	for(auto y : e[x]) {
-		if(y != fa)
+		if(y != fa) {
 			dfs2(y, x);
+			cnt[x] += cnt[y]; 
+		}
 	}
 }
 
-int lca(int x, int y, int i) {
+int lca(int x, int y) {
 	if(dep[x] < dep[y]) swap(x, y);
 	for(int i = MaxL - 1, K = dep[x] - dep[y]; ~i; i--)
 		if(K >> i & 1) x = f[x][i];
@@ -53,30 +60,86 @@ int lca(int x, int y, int i) {
 	return f[x][0];
 }
 
+int clk, cn, L[MaxN], R[MaxN];
+bool chk(int x, int fa = 0) {
+	c[x] = 1; ++clk;
+	for(auto z : h[x]) {
+		if(!vis[z]) {
+			vis[z] = ++cn;
+			L[cn] = clk;
+		}
+		else 
+			R[vis[z]] = clk;
+	}
+	for(auto y : g[x]) {
+		if(y == fa) continue;
+		chk(y, x);
+	} 
+}
+
+int s[MaxN];
+
+struct bit{
+	int bit[MaxN], t[MaxN], T;
+	
+	void clr() {
+		++T;
+	}
+	
+	int query(int p) {
+		int ans = 0;
+		for(; p; p -= p & -p) {
+			if(t[p] != T) t[p] = T, bit[p] = 0;
+			ans += bit[p];
+		}
+		return ans;
+	}
+	
+	void add(int p) {
+		for(; p < MaxN; p += p & -p) {
+			if(t[p] != T) t[p] = T, bit[p] = 0;
+			bit[p]++;
+		}
+	}
+}T;
+bool check() {
+	int i, j, k;
+	T.clr();
+	for(i = 1; i <= cn; i = j) {
+		for(j = i; j <= cn && L[i] == L[j]; j++)
+			if(T.query(R[j] - 1) - T.query(L[j] - 1) > 0)
+				return 0;
+		for(j = i; j <= cn && L[i] == L[j]; j++) T.add(R[j]);
+	}
+	return 1;
+}
 int main() {
-	int i;
+	int i, j;
 	n = read(); m = read();
 	for(i = 1; i < n; i++) {
-		int a = read(), b = read();
-		e[a].push_back(b); 
+		a[i] = read(); b[i] = read();
+		e[a[i]].push_back(b[i]);
+		e[b[i]].push_back(a[i]); 
 	}
 	dfs(1);
 	for(i = 1; i <= m; i++) {
 		u[i] = read(); v[i] = read();
-		int w = lca(u[i], v[i], i); cnt[w]++;
-		p[w].push_back(i);
+		int w = lca(u[i], v[i]);
+		h[u[i]].emplace_back(i);
+		h[v[i]].emplace_back(i);
+		cnt[w] -= 2; cnt[u[i]]++; cnt[v[i]]++;
 	}
 	dfs2(1);
-	for(i = 1; i <= n; i++) {
-		if(!p[i].size()) continue;
-		sort(p[i].begin(), p[i].end(), [&] (int x, int y) {return dep[x] > dep[y];});
-		for(int j = 0; j + 1 < p[i].size(); j++) {
-			int x = p[i][j], y = p[i][j + 1];
-			if(dep[v[x]] < dep[v[y]]) return puts("No 1"), 0;
-			if(!(in[y] <= in[x] && in[x] <= out[y])) return puts("No 2"), 0; 
+	for(i = 1; i <= n; i++) if(f[i][0] && cnt[i]) addEdge(f[i][0], i);
+	for(i = 1; i <= n; i++) if(deg[i] > 2) return puts("No"), 0;
+	
+	for(i = 1; i <= n; i++) 
+		if(!c[i] && deg[i] == 1) {
+			clk = cn = 0;
+			vis.clear();
+			chk(i);
+			if(!check()) return puts("No"), 0;
 		}
-		if(cnt[u[p[i][0]]] != cnt[f[i][0]] || cnt[v[p[i][0]]] != cnt[f[i][0]]) return puts("No 3"), 0;
-	}
 	puts("Yes");
 	return 0;
 }
