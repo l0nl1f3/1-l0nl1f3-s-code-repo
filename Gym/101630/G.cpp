@@ -98,4 +98,3 @@ int main() {
 	cout << L + S;
 	return 0;
 }
-
