@@ -345,7 +345,7 @@ int main() {
 
 考虑存在区间相交的情况，我们这样定义区间对 $(x, y)$ 的价值
 
-设 $f_x = \sum_{i = 1} ^ {x - 1} c_i - 2b_i + \sum_{i = x} ^ {x + r - 1} c_i b_i$, 以及 $g_x = \sum_{i = 1} ^ {x - 1} 2b_i - c_i + \sum_{i = y}{y + r - 1} b_i$
+设 $f_x = \sum_{i = 1} ^ {x - 1} c_i - 2b_i + \sum_{i = x} ^ {x + r - 1} c_i - b_i$, 以及 $g_x = \sum_{i = 1} ^ {x - 1} 2b_i - c_i + \sum_{i = y}{y + r - 1} b_i$
 
 这样 $f_y + g_x$ 该消的消掉。。 贡献也是对的，按上面那样枚举一个即可
 
