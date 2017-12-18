@@ -56,6 +56,7 @@ LL chk(LL s) {
 		LL x = lower_bound(lx + 1, lx + xn + 1, s - p[i]) - lx - 1, 
 			y = lower_bound(ly + 1, ly + yn + 1, s - S) - ly - 1;
 		ans += A.sum(y) + B.sum(x);
+	//	if(ans >= K) break;
 		A.add(qs[i] + 1, 1);
 		if(i >= r) {
 			A.add(qs[i - r] + 1, -1);
