@@ -20,19 +20,19 @@ const int MaxN = 2333;
 
 int r, c, a[MaxN][MaxN], ed[MaxN];
 
-int nxt(int x, int y) {
+int nxt(int x, int y, bool chk = 1) {
 	int mx = 0, my = 0;
 	for(int t = x - 1; t <= x + 1; t++) 
 		if(cmax(mx, a[(t + r) % r][(y + 1) % c]))
-			my = (t + r) % r;
+			my = chk ? (t + r) % r : t;
 	return my;
 }
 
 int gao(int x, int y) {
-	while(y < c) {
+	do{
 		x = nxt(x, y);
 		y++;
-	} y = 0;
+	} while(y < c);
 	return x;
 }
 
@@ -49,19 +49,32 @@ void move(int K) {
 		K -= c; px = ed[px];
 		if(vis[px] == clk) {
 			int L = tm[px] - K;
-			if(K >= L) 
-				K -= (K / L) * L;
+			if(K >= L) K %= L;
 		}
 		vis[px] = clk; tm[px] = K;
 	}
-	while(K--) {
-		px = nxt(px, py);
-		py = (py + 1) % c;
-	}
+	while(K--) 
+		px = nxt(px, py), py = (py + 1) % c;
 }
 
 void update(int x, int y) {
-	int 
+	int z = gao(x, y);
+	int L = x, R = x, t = y, i, j;
+	while(t--) {
+		int qL = INT_MAX, qR = -INT_MAX; 
+		for(i = L - 1; j = nxt(i, t, 0), i <= L + 1; i++) 
+			if(L <= j && j <= R) {
+				qL = i; break;
+			}
+		for(i = R + 1; j = nxt(i, t, 0), i >= R - 1; i--) 
+			if(L <= j && j <= R) {
+				qR = i; break;
+			}
+		if(qL > qR) return; L = qL, R = qR;
+	}
+	if(R - L + 1 >= r) L = 0, R = r - 1;
+	for(i = L; i <= R; i++) 
+		ed[(i % r + r) % r] = z; 
 }
 
 int main() {
@@ -79,14 +92,14 @@ int main() {
 		if(s[0] == 'm') {
 			K = read();
 			move(K);
-			printf("%d %d\n", px + 1, py +1);
+			printf("%d %d\n", px + 1, py + 1);
 		}else {
 			x = read() - 1; y = read() - 1;
 			a[x][y] = read();
 			for(i = x - 1; i <= x + 1; i++) 
-				update((x + r) % r, (y - 1 + r) % r);
+				update((i + r) % r, ((y - 1 + c) % c));
 		}
 	}
 	return 0;
 }
-
+close
