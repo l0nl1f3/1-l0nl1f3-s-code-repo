@@ -27,10 +27,10 @@ const int MaxN = 101234, MaxM = 101234;
 bool dcmp(db a, db b) {
 	return (a - b > -eps && a - b < eps);
 }
-
+ 
 struct point {
 	db x, y;
-	bool operator < (point b) {
+	bool operator < (point b) const {
 		return dcmp(x, b.x) ? y < b.y : x < b.x;
 	}
 }; 
@@ -42,7 +42,7 @@ struct line {
 		A = a; B = b; C = c;
 		if(dcmp(b, 0)) k = 1e50; else k = - a / b;
 	} 
-	bool operator < (line b) {
+	bool operator < (line b) const {
 		if(dcmp(k, b.k)) {
 			if(!dcmp(B, 0))
 				return C / B < b.C / b.B;
@@ -54,7 +54,7 @@ struct line {
 
 struct ev {
 	point x; int i;
-	bool operator < (ev b) {
+	bool operator < (ev b) const {
 		return x < b.x;
 	}
 }q[MaxM];
@@ -62,7 +62,7 @@ struct ev {
 
 struct info {
 	int L1, L2; point x;
-	bool operator < (info b) {
+	bool operator < (info b) const {
 		if(dcmp(x.x, b.x.x) && dcmp(x.y, b.x.y)) {
 			return L1 == b.L1 ? L2 < b.L2 : L1 < b.L1;
 		}
